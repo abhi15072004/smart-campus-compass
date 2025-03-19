@@ -28,7 +28,7 @@ const DEPARTMENTS = [
     headName: 'Dr. Sarah Johnson',
     email: 'cs@example.edu',
     phone: '(555) 123-4567',
-    courses: 24,
+    coursesCount: 24,
     openHours: 'Mon-Fri: 9:00 AM - 5:00 PM',
     color: '#4facfe',
     description: 'The Department of Computer Science is dedicated to providing students with a comprehensive education in theoretical and applied computer science. Our curriculum emphasizes problem-solving, critical thinking, and hands-on experience with cutting-edge technologies.',

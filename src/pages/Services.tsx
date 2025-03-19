@@ -6,7 +6,7 @@ import {
   Utensils, 
   Dumbbell, 
   Bus, 
-  FirstAid, 
+  AlertCircle, 
   Coffee,
   Wifi,
   Printer,
@@ -67,7 +67,7 @@ const SERVICES = [
     hours: 'Mon-Fri: 8:00 AM - 5:00 PM, Sat: 9:00 AM - 2:00 PM (Emergency Only)',
     location: 'Student Services Building, 1st Floor',
     contact: '(555) 123-4571',
-    icon: <FirstAid className="h-5 w-5" />,
+    icon: <AlertCircle className="h-5 w-5" />,
     color: '#ec4899',
   },
   {
@@ -218,7 +218,7 @@ const Services: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center">
               <div className="mb-6 md:mb-0 md:mr-8 flex-shrink-0">
                 <div className="bg-white/20 p-4 rounded-full">
-                  <FirstAid className="h-12 w-12" />
+                  <AlertCircle className="h-12 w-12" />
                 </div>
               </div>
               
