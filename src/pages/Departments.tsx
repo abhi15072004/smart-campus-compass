@@ -8,63 +8,106 @@ import Navbar from '@/components/Navbar';
 import DepartmentCard from '@/components/DepartmentCard';
 import AnimatedTransition from '@/components/AnimatedTransition';
 
-// Mock departments data
+// Mock departments data - structured for easier database migration
 const DEPARTMENTS = [
   {
     id: 1,
     name: 'Computer Science',
-    building: 'Tech Building',
-    headName: 'Dr. Sarah Johnson',
-    courses: 24,
-    openHours: 'Mon-Fri: 9:00 AM - 5:00 PM',
+    building_id: 1,
+    building_name: 'Tech Building',
+    head_id: 1,
+    head_name: 'Dr. Sarah Johnson',
+    head_email: 'sarah.johnson@example.edu',
+    courses_count: 24,
+    open_hours: 'Mon-Fri: 9:00 AM - 5:00 PM',
     color: '#4facfe',
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 2,
     name: 'Electrical Engineering',
-    building: 'Engineering Block',
-    headName: 'Prof. Michael Chen',
-    courses: 18,
-    openHours: 'Mon-Fri: 8:30 AM - 4:30 PM',
+    building_id: 2,
+    building_name: 'Engineering Block',
+    head_id: 2,
+    head_name: 'Prof. Michael Chen',
+    head_email: 'michael.chen@example.edu',
+    courses_count: 18,
+    open_hours: 'Mon-Fri: 8:30 AM - 4:30 PM',
     color: '#7367f0',
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 3,
     name: 'Business Administration',
-    building: 'Management Building',
-    headName: 'Dr. Emily Rodriguez',
-    courses: 22,
-    openHours: 'Mon-Fri: 9:00 AM - 5:00 PM',
+    building_id: 3,
+    building_name: 'Management Building',
+    head_id: 3,
+    head_name: 'Dr. Emily Rodriguez',
+    head_email: 'emily.rodriguez@example.edu',
+    courses_count: 22,
+    open_hours: 'Mon-Fri: 9:00 AM - 5:00 PM',
     color: '#38b2ac',
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 4,
     name: 'Physics',
-    building: 'Science Block',
-    headName: 'Prof. David Kim',
-    courses: 16,
-    openHours: 'Mon-Fri: 8:00 AM - 4:00 PM',
+    building_id: 4,
+    building_name: 'Science Block',
+    head_id: 4,
+    head_name: 'Prof. David Kim',
+    head_email: 'david.kim@example.edu',
+    courses_count: 16,
+    open_hours: 'Mon-Fri: 8:00 AM - 4:00 PM',
     color: '#6c5ce7',
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 5,
     name: 'Psychology',
-    building: 'Humanities Building',
-    headName: 'Dr. Jessica Wang',
-    courses: 20,
-    openHours: 'Mon-Fri: 9:00 AM - 4:30 PM',
+    building_id: 5,
+    building_name: 'Humanities Building',
+    head_id: 5,
+    head_name: 'Dr. Jessica Wang',
+    head_email: 'jessica.wang@example.edu',
+    courses_count: 20,
+    open_hours: 'Mon-Fri: 9:00 AM - 4:30 PM',
     color: '#ff6b6b',
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 6,
     name: 'Mechanical Engineering',
-    building: 'Engineering Block',
-    headName: 'Prof. Robert Lee',
-    courses: 19,
-    openHours: 'Mon-Fri: 8:30 AM - 5:30 PM',
+    building_id: 2,
+    building_name: 'Engineering Block',
+    head_id: 6,
+    head_name: 'Prof. Robert Lee',
+    head_email: 'robert.lee@example.edu',
+    courses_count: 19,
+    open_hours: 'Mon-Fri: 8:30 AM - 5:30 PM',
     color: '#ffa726',
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
 ];
+
+// Format department data for the DepartmentCard component
+const formatDepartmentForDisplay = (dept: any) => {
+  return {
+    id: dept.id,
+    name: dept.name,
+    building: dept.building_name,
+    headName: dept.head_name,
+    courses: dept.courses_count,
+    openHours: dept.open_hours,
+    color: dept.color
+  };
+};
 
 const Departments: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -72,8 +115,8 @@ const Departments: React.FC = () => {
   // Filter departments based on search query
   const filteredDepartments = DEPARTMENTS.filter(dept => 
     dept.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    dept.building.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    dept.headName.toLowerCase().includes(searchQuery.toLowerCase())
+    dept.building_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    dept.head_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   
   return (
@@ -120,7 +163,7 @@ const Departments: React.FC = () => {
         </header>
         
         {/* Department cards */}
-        <div className="grid-container py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
           {filteredDepartments.length > 0 ? (
             filteredDepartments.map((department, index) => (
               <motion.div
@@ -129,7 +172,7 @@ const Departments: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
               >
-                <DepartmentCard department={department} />
+                <DepartmentCard department={formatDepartmentForDisplay(department)} />
               </motion.div>
             ))
           ) : (

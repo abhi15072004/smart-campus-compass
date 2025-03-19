@@ -19,24 +19,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Navbar from '@/components/Navbar';
 import AnimatedTransition from '@/components/AnimatedTransition';
 
-// Mock department data
+// Mock department data with database-friendly structure
 const DEPARTMENTS = [
   {
     id: '1',
     name: 'Computer Science',
     building: 'Tech Building, 3rd Floor',
-    headName: 'Dr. Sarah Johnson',
-    email: 'cs@example.edu',
-    phone: '(555) 123-4567',
-    coursesCount: 24,
-    openHours: 'Mon-Fri: 9:00 AM - 5:00 PM',
+    head_id: 1,
+    head_name: 'Dr. Sarah Johnson',
+    head_email: 'cs@example.edu',
+    contact_phone: '(555) 123-4567',
+    courses_count: 24,
+    open_hours: 'Mon-Fri: 9:00 AM - 5:00 PM',
     color: '#4facfe',
     description: 'The Department of Computer Science is dedicated to providing students with a comprehensive education in theoretical and applied computer science. Our curriculum emphasizes problem-solving, critical thinking, and hands-on experience with cutting-edge technologies.',
     faculty: [
-      { id: 1, name: 'Dr. Sarah Johnson', position: 'Department Head', specialization: 'Artificial Intelligence' },
-      { id: 2, name: 'Prof. Michael Chen', position: 'Associate Professor', specialization: 'Cybersecurity' },
-      { id: 3, name: 'Dr. Emily Rodriguez', position: 'Assistant Professor', specialization: 'Machine Learning' },
-      { id: 4, name: 'Prof. David Kim', position: 'Lecturer', specialization: 'Software Engineering' },
+      { id: 1, name: 'Dr. Sarah Johnson', position: 'Department Head', specialization: 'Artificial Intelligence', email: 'sarah.johnson@example.edu' },
+      { id: 2, name: 'Prof. Michael Chen', position: 'Associate Professor', specialization: 'Cybersecurity', email: 'michael.chen@example.edu' },
+      { id: 3, name: 'Dr. Emily Rodriguez', position: 'Assistant Professor', specialization: 'Machine Learning', email: 'emily.rodriguez@example.edu' },
+      { id: 4, name: 'Prof. David Kim', position: 'Lecturer', specialization: 'Software Engineering', email: 'david.kim@example.edu' },
     ],
     courses: [
       { id: 101, code: 'CS101', name: 'Introduction to Programming', credits: 3 },
@@ -48,7 +49,19 @@ const DEPARTMENTS = [
     events: [
       { id: 201, name: 'Tech Symposium', date: 'October 15, 2023', time: '10:00 AM - 4:00 PM' },
       { id: 202, name: 'Coding Competition', date: 'November 5, 2023', time: '9:00 AM - 6:00 PM' },
-    ]
+    ],
+    resources: [
+      { id: 301, name: 'Computer Labs', count: 4 },
+      { id: 302, name: 'Research Facilities', count: 2 },
+      { id: 303, name: 'Student Study Areas', count: 3 },
+    ],
+    programs: [
+      { id: 401, name: 'B.Sc. Computer Science', level: 'Undergraduate' },
+      { id: 402, name: 'M.Sc. Computer Science', level: 'Graduate' },
+      { id: 403, name: 'Ph.D. Computer Science', level: 'Doctoral' },
+    ],
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-06-15T00:00:00Z'
   },
   // More departments would be defined here...
 ];
@@ -107,17 +120,17 @@ const DepartmentDetails: React.FC = () => {
               
               <div className="flex items-center text-white/90">
                 <User className="h-5 w-5 mr-2 flex-shrink-0" />
-                <span>{department.headName}</span>
+                <span>{department.head_name}</span>
               </div>
               
               <div className="flex items-center text-white/90">
                 <Mail className="h-5 w-5 mr-2 flex-shrink-0" />
-                <span>{department.email}</span>
+                <span>{department.head_email}</span>
               </div>
               
               <div className="flex items-center text-white/90">
                 <Phone className="h-5 w-5 mr-2 flex-shrink-0" />
-                <span>{department.phone}</span>
+                <span>{department.contact_phone}</span>
               </div>
               
               <div className="flex items-center text-white/90">
@@ -127,7 +140,7 @@ const DepartmentDetails: React.FC = () => {
               
               <div className="flex items-center text-white/90">
                 <Clock className="h-5 w-5 mr-2 flex-shrink-0" />
-                <span>{department.openHours}</span>
+                <span>{department.open_hours}</span>
               </div>
             </div>
           </div>
@@ -158,9 +171,11 @@ const DepartmentDetails: React.FC = () => {
                     <h3 className="text-lg font-semibold">Resources</h3>
                   </div>
                   <ul className="space-y-2">
-                    <li className="text-sm text-muted-foreground">Computer Labs: 4</li>
-                    <li className="text-sm text-muted-foreground">Research Facilities: 2</li>
-                    <li className="text-sm text-muted-foreground">Student Study Areas: 3</li>
+                    {department.resources.map(resource => (
+                      <li key={resource.id} className="text-sm text-muted-foreground">
+                        {resource.name}: {resource.count}
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 
@@ -172,9 +187,11 @@ const DepartmentDetails: React.FC = () => {
                     <h3 className="text-lg font-semibold">Programs</h3>
                   </div>
                   <ul className="space-y-2">
-                    <li className="text-sm text-muted-foreground">B.Sc. Computer Science</li>
-                    <li className="text-sm text-muted-foreground">M.Sc. Computer Science</li>
-                    <li className="text-sm text-muted-foreground">Ph.D. Computer Science</li>
+                    {department.programs.map(program => (
+                      <li key={program.id} className="text-sm text-muted-foreground">
+                        {program.name}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>

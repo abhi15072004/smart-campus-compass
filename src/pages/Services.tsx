@@ -18,7 +18,7 @@ import Navbar from '@/components/Navbar';
 import ServiceCard from '@/components/ServiceCard';
 import AnimatedTransition from '@/components/AnimatedTransition';
 
-// Mock services data
+// Mock services data - structured for easier database migration
 const SERVICES = [
   {
     id: 1,
@@ -27,7 +27,8 @@ const SERVICES = [
     hours: 'Mon-Fri: 8:00 AM - 10:00 PM, Sat-Sun: 10:00 AM - 6:00 PM',
     location: 'Central Campus',
     contact: '(555) 123-4567',
-    icon: <Book className="h-5 w-5" />,
+    category_id: 3, // Study & Resources category
+    icon_name: 'Book',
     color: '#3b82f6',
   },
   {
@@ -37,7 +38,8 @@ const SERVICES = [
     hours: 'Mon-Fri: 7:00 AM - 8:00 PM, Sat-Sun: 8:00 AM - 7:00 PM',
     location: 'Student Center, Ground Floor',
     contact: '(555) 123-4568',
-    icon: <Utensils className="h-5 w-5" />,
+    category_id: 1, // Food & Dining category
+    icon_name: 'Utensils',
     color: '#ef4444',
   },
   {
@@ -47,7 +49,8 @@ const SERVICES = [
     hours: 'Mon-Fri: 6:00 AM - 9:00 PM, Sat-Sun: 8:00 AM - 6:00 PM',
     location: 'East Campus',
     contact: '(555) 123-4569',
-    icon: <Dumbbell className="h-5 w-5" />,
+    category_id: 2, // Health & Wellness category
+    icon_name: 'Dumbbell',
     color: '#22c55e',
   },
   {
@@ -57,7 +60,8 @@ const SERVICES = [
     hours: 'Mon-Fri: 7:00 AM - 10:00 PM, Sat: 9:00 AM - 6:00 PM',
     location: 'Various Stops Around Campus',
     contact: '(555) 123-4570',
-    icon: <Bus className="h-5 w-5" />,
+    category_id: 4, // Campus Facilities category
+    icon_name: 'Bus',
     color: '#f59e0b',
   },
   {
@@ -67,7 +71,8 @@ const SERVICES = [
     hours: 'Mon-Fri: 8:00 AM - 5:00 PM, Sat: 9:00 AM - 2:00 PM (Emergency Only)',
     location: 'Student Services Building, 1st Floor',
     contact: '(555) 123-4571',
-    icon: <AlertCircle className="h-5 w-5" />,
+    category_id: 2, // Health & Wellness category
+    icon_name: 'AlertCircle',
     color: '#ec4899',
   },
   {
@@ -77,7 +82,8 @@ const SERVICES = [
     hours: 'Mon-Fri: 7:00 AM - 8:00 PM, Sat-Sun: 8:00 AM - 6:00 PM',
     location: 'Library Building, Ground Floor',
     contact: '(555) 123-4572',
-    icon: <Coffee className="h-5 w-5" />,
+    category_id: 1, // Food & Dining category
+    icon_name: 'Coffee',
     color: '#8b5cf6',
   },
   {
@@ -87,7 +93,8 @@ const SERVICES = [
     hours: '24/7',
     location: 'Campus-wide',
     contact: 'helpdesk@campus.edu',
-    icon: <Wifi className="h-5 w-5" />,
+    category_id: 3, // Study & Resources category
+    icon_name: 'Wifi',
     color: '#06b6d4',
   },
   {
@@ -97,7 +104,8 @@ const SERVICES = [
     hours: 'Mon-Fri: 8:00 AM - 8:00 PM, Sat: 10:00 AM - 4:00 PM',
     location: 'Library & Computer Labs',
     contact: '(555) 123-4573',
-    icon: <Printer className="h-5 w-5" />,
+    category_id: 3, // Study & Resources category
+    icon_name: 'Printer',
     color: '#64748b',
   },
   {
@@ -107,7 +115,8 @@ const SERVICES = [
     hours: '24/7',
     location: 'All Academic Buildings & Dormitories',
     contact: 'facilities@campus.edu',
-    icon: <Droplet className="h-5 w-5" />,
+    category_id: 4, // Campus Facilities category
+    icon_name: 'Droplet',
     color: '#0ea5e9',
   },
   {
@@ -117,40 +126,67 @@ const SERVICES = [
     hours: '24/7 (Permit Required)',
     location: 'Multiple Lots Around Campus',
     contact: 'parking@campus.edu',
-    icon: <ParkingSquare className="h-5 w-5" />,
+    category_id: 4, // Campus Facilities category
+    icon_name: 'ParkingSquare',
     color: '#475569',
   },
 ];
 
-// Group services by type
+// Service categories table
 const SERVICE_CATEGORIES = [
   {
+    id: 1,
     title: 'Food & Dining',
-    services: SERVICES.filter(service => 
-      ['Cafeteria', 'Coffee Shop'].includes(service.name)
-    ),
   },
   {
+    id: 2,
     title: 'Health & Wellness',
-    services: SERVICES.filter(service => 
-      ['Health Center', 'Sports Complex'].includes(service.name)
-    ),
   },
   {
+    id: 3,
     title: 'Study & Resources',
-    services: SERVICES.filter(service => 
-      ['Library', 'Printing Services', 'WiFi Network'].includes(service.name)
-    ),
   },
   {
+    id: 4,
     title: 'Campus Facilities',
-    services: SERVICES.filter(service => 
-      ['Campus Shuttle', 'Water Stations', 'Parking'].includes(service.name)
-    ),
   },
 ];
 
+// Helper function to get icon component by name
+const getIconByName = (iconName: string) => {
+  const iconMap: { [key: string]: React.ReactNode } = {
+    'Book': <Book className="h-5 w-5" />,
+    'Utensils': <Utensils className="h-5 w-5" />,
+    'Dumbbell': <Dumbbell className="h-5 w-5" />,
+    'Bus': <Bus className="h-5 w-5" />,
+    'AlertCircle': <AlertCircle className="h-5 w-5" />,
+    'Coffee': <Coffee className="h-5 w-5" />,
+    'Wifi': <Wifi className="h-5 w-5" />,
+    'Printer': <Printer className="h-5 w-5" />,
+    'Droplet': <Droplet className="h-5 w-5" />,
+    'ParkingSquare': <ParkingSquare className="h-5 w-5" />,
+  };
+  
+  return iconMap[iconName] || <Book className="h-5 w-5" />;
+};
+
+// Group services by category
+const getServicesByCategory = () => {
+  return SERVICE_CATEGORIES.map(category => {
+    return {
+      ...category,
+      services: SERVICES.filter(service => service.category_id === category.id)
+        .map(service => ({
+          ...service,
+          icon: getIconByName(service.icon_name)
+        }))
+    };
+  });
+};
+
 const Services: React.FC = () => {
+  const servicesByCategory = getServicesByCategory();
+  
   return (
     <AnimatedTransition className="min-h-screen bg-background">
       <Navbar />
@@ -178,8 +214,8 @@ const Services: React.FC = () => {
         </header>
         
         {/* Service Categories */}
-        {SERVICE_CATEGORIES.map((category, categoryIndex) => (
-          <section key={category.title} className="my-12">
+        {servicesByCategory.map((category, categoryIndex) => (
+          <section key={category.id} className="my-12">
             <motion.h2 
               className="text-2xl font-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
